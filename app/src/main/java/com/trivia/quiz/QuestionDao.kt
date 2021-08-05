@@ -7,7 +7,7 @@ import androidx.room.Query
 
 @Dao
 interface QuestionDao {
-    @Query("SELECT * FROM questions")
+    @Query("SELECT * FROM Questions")
     fun getAll(): List<Question>
 
     @Insert
