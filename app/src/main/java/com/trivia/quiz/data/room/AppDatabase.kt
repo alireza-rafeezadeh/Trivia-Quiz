@@ -1,4 +1,4 @@
-package com.trivia.quiz.ui.data.room
+package com.trivia.quiz.data.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

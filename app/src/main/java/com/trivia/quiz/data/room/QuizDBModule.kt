@@ -1,4 +1,4 @@
-package com.trivia.quiz.ui.data.room
+package com.trivia.quiz.data.room
 
 //@Module
 //@InstallIn(SingletonComponent::class)
