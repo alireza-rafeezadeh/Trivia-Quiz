@@ -1,4 +1,4 @@
-package com.trivia.quiz.ui
+package com.trivia.quiz.ui.quiz
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
