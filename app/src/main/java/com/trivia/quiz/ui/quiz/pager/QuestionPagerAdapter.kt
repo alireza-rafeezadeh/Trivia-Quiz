@@ -8,5 +8,5 @@ import com.trivia.quiz.Question
 
 class QuestionPagerAdapter(fa : FragmentActivity,val list : List<Question>) : FragmentStateAdapter(fa) {
     override fun getItemCount(): Int  = 6
-    override fun createFragment(position: Int): Fragment = QuestionPageFragment(list[position])
+    override fun createFragment(position: Int): Fragment = QuestionPageFragment(list[position], position)
 }
