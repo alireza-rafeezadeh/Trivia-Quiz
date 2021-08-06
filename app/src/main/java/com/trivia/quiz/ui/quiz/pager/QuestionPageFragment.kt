@@ -10,17 +10,24 @@ import com.trivia.quiz.R
 import com.trivia.quiz.databinding.FragmentQuestionPageBinding
 import com.trivia.quiz.domain.quiz.Answer
 import com.trivia.quiz.domain.quiz.Answers
+import com.trivia.quiz.domain.quiz.QuizResult
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class QuestionPageFragment(
     val question: Question,
     val questionNumber : Int
 ) : ViewBindingFragment<FragmentQuestionPageBinding>() {
+
     override val bindingInflater:
                 (LayoutInflater, ViewGroup?, Boolean) -> FragmentQuestionPageBinding
         get() = FragmentQuestionPageBinding::inflate
-
     lateinit var answers: MutableList<Answer>
+
+    @Inject
+    lateinit var quizResult: QuizResult
+
     override fun setup() {
         answers =
             mutableListOf(
@@ -45,7 +52,8 @@ class QuestionPageFragment(
 //            if (answers[index].isCorrect) {
 //                // QuizResult.getInstance().
 //            }
-            Log.i("<<radio_tg>>", "setOnClickListeners: $index")
+            quizResult.results.add(true)
+            Log.i("<<radio_tg>>", "setOnClickListeners: $quizResult")
         }
     }
 
