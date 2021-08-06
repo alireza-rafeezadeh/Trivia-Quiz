@@ -1,5 +1,7 @@
 package com.trivia.quiz.data.datasource.offline.quiz
 
+import com.trivia.quiz.Question
+
 interface QuizOfflineDataSource {
-    fun getQuestions()
+    suspend fun getQuestions() : List<Question>
 }
