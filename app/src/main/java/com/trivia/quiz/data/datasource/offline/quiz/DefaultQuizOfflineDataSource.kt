@@ -8,6 +8,6 @@ class DefaultQuizOfflineDataSource @Inject constructor(
     private val database: AppDatabase
 ) : QuizOfflineDataSource {
     override suspend fun getQuestions(): List<Question> {
-        return database.questionDao().getAll()
+        return database.questionDao().getRandomRows()
     }
 }
