@@ -10,7 +10,8 @@ import com.trivia.quiz.domain.quiz.Answer
 
 
 class AnswerRVAdapter(
-    private val answers: MutableList<Answer>
+    private val answers: MutableList<Answer>,
+    private val onClick : (index : Int) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var oldSelectedItem = -1
@@ -51,6 +52,7 @@ class AnswerRVAdapter(
                 }
                 binding.root.setBackgroundColor(Color.GRAY)
                 oldSelectedItem = adapterPosition*/
+                onClick(adapterPosition)
                 selectedItem = adapterPosition
                 notifyDataSetChanged()
             }

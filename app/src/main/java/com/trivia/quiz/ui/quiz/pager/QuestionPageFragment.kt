@@ -1,6 +1,7 @@
 package com.trivia.quiz.ui.quiz.pager
 
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.trivia.quiz.Question
@@ -14,7 +15,7 @@ import kotlin.concurrent.timer
 @AndroidEntryPoint
 class QuestionPageFragment(
     val question: Question,
-    val questionNumber : Int,
+    val questionNumber: Int,
     val onCompleteTimer: () -> Unit
 ) : ViewBindingFragment<FragmentQuestionPageBinding>() {
 
@@ -24,6 +25,7 @@ class QuestionPageFragment(
     lateinit var answers: MutableList<Answer>
 
     lateinit var timer: CountDownTimer
+    var userAnswer = false
 
     @Inject
     lateinit var quizResult: QuizResult
@@ -54,13 +56,15 @@ class QuestionPageFragment(
     }
 
     private fun initCountDownTimer() {
-        timer = object : CountDownTimer(10000,1000) {
+        timer = object : CountDownTimer(10000, 1000) {
             override fun onTick(progress: Long) {
                 val v = (progress / 10000f) * 100f
                 binding.progressBar.progress = v.toInt()
             }
 
             override fun onFinish() {
+                quizResult.results.add(userAnswer)
+                Log.i("<<radio_tg>>", "setOnClickListeners: $quizResult")
                 onCompleteTimer()
             }
 
@@ -70,7 +74,9 @@ class QuestionPageFragment(
     }
 
     private fun initRecyclerView() {
-        val adapter = AnswerRVAdapter(answers)
+        val adapter = AnswerRVAdapter(answers) {
+            userAnswer = answers[it].isCorrect
+        }
         binding.answersRecyclerView.adapter = adapter
     }
 
@@ -82,6 +88,14 @@ class QuestionPageFragment(
             quizResult.results.add(true)
             Log.i("<<radio_tg>>", "setOnClickListeners: $quizResult")
         }*/
+
+        binding.nextButton.setOnClickListener {
+            timer.cancel()
+            //TODO: make it a function
+            quizResult.results.add(userAnswer)
+            Log.i("<<radio_tg>>", "setOnClickListeners: $quizResult")
+            onCompleteTimer()
+        }
     }
 
     override fun onDestroy() {
