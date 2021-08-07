@@ -19,17 +19,29 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        tools:listitem="@layout/item_answer"
-        tools:itemCount="4"
-        android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:id="@+id/answers_recycler_view"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="393dp"
         android:layout_marginTop="100dp"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/question_text_view" />
+        app:layout_constraintTop_toBottomOf="@+id/question_text_view"
+        tools:itemCount="4"
+        tools:listitem="@layout/item_answer" />
+
+    <ProgressBar
+        tools:progress="30"
+        android:progressTint="#64B5F6"
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

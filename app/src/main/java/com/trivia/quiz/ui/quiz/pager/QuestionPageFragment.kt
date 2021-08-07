@@ -1,5 +1,6 @@
 package com.trivia.quiz.ui.quiz.pager
 
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.trivia.quiz.Question
@@ -8,17 +9,21 @@ import com.trivia.quiz.domain.quiz.Answer
 import com.trivia.quiz.domain.quiz.QuizResult
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import kotlin.concurrent.timer
 
 @AndroidEntryPoint
 class QuestionPageFragment(
     val question: Question,
-    val questionNumber : Int
+    val questionNumber : Int,
+    val onCompleteTimer: () -> Unit
 ) : ViewBindingFragment<FragmentQuestionPageBinding>() {
 
     override val bindingInflater:
                 (LayoutInflater, ViewGroup?, Boolean) -> FragmentQuestionPageBinding
         get() = FragmentQuestionPageBinding::inflate
     lateinit var answers: MutableList<Answer>
+
+    lateinit var timer: CountDownTimer
 
     @Inject
     lateinit var quizResult: QuizResult
@@ -43,6 +48,27 @@ class QuestionPageFragment(
         setOnClickListeners()
     }
 
+    override fun onResume() {
+        super.onResume()
+        initCountDownTimer()
+    }
+
+    private fun initCountDownTimer() {
+        timer = object : CountDownTimer(10000,1000) {
+            override fun onTick(progress: Long) {
+                val v = (progress / 10000f) * 100f
+                binding.progressBar.progress = v.toInt()
+            }
+
+            override fun onFinish() {
+                onCompleteTimer()
+            }
+
+        }
+
+        timer.start()
+    }
+
     private fun initRecyclerView() {
         val adapter = AnswerRVAdapter(answers)
         binding.answersRecyclerView.adapter = adapter
@@ -56,6 +82,11 @@ class QuestionPageFragment(
             quizResult.results.add(true)
             Log.i("<<radio_tg>>", "setOnClickListeners: $quizResult")
         }*/
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        timer.cancel()
     }
 
 }

@@ -32,7 +32,10 @@ class QuizFragment : ViewBindingFragment<FragmentQuizBinding>() {
     }
 
     private fun initViewPager(list: List<Question>) {
-        val pagerAdapter = QuestionPagerAdapter(requireActivity(),list)
+        val pagerAdapter = QuestionPagerAdapter(requireActivity(),list ) {
+            binding.pager.currentItem += 1
+        }
+        binding.pager.isUserInputEnabled = false
         binding.pager.adapter = pagerAdapter
     }
 }
