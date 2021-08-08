@@ -27,6 +27,9 @@ class QuestionPageFragment(
     lateinit var timer: CountDownTimer
     var userAnswer = false
     lateinit var adapter : AnswerRVAdapter
+    var timeToAnswer : Long = 10000
+    var additionalTime : Long = 0
+    var progressT : Long = 0
 
     @Inject
     lateinit var quizResult: QuizResult
@@ -57,9 +60,10 @@ class QuestionPageFragment(
     }
 
     private fun initCountDownTimer() {
-        timer = object : CountDownTimer(10000, 1000) {
+        timer = object : CountDownTimer(timeToAnswer, 1000) {
             override fun onTick(progress: Long) {
-                val v = (progress / 10000f) * 100f
+                progressT = progress
+                val v = (progress / timeToAnswer.toFloat()) * 100f
                 binding.progressBar.progress = v.toInt()
             }
 
@@ -103,6 +107,12 @@ class QuestionPageFragment(
 
         binding.removeTwoAnswers.setOnClickListener {
             adapter.removeTwoAnswers()
+        }
+
+        binding.addTenSecondsButton.setOnClickListener {
+            timer.cancel()
+            timeToAnswer = progressT + 10000
+            initCountDownTimer()
         }
     }
 
