@@ -11,7 +11,7 @@ import com.trivia.quiz.domain.quiz.Answer
 
 class AnswerRVAdapter(
     private val answers: MutableList<Answer>,
-    private val onClick : (index : Int) -> Unit
+    private val onClick: (index: Int) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var oldSelectedItem = -1
@@ -29,16 +29,27 @@ class AnswerRVAdapter(
 //        if (position == oldSelectedItem) {
 //            holder.unSelectItem()
 //        }
-         if (position == selectedItem) {
+        if (position == selectedItem) {
             holder.selectItem()
         } else {
-             holder.unSelectItem()
+            holder.unSelectItem()
 
-         }
+        }
 
     }
 
     override fun getItemCount(): Int = answers.size
+
+    fun removeTwoAnswers() {
+
+        answers.indexOfFirst {
+            it.isCorrect
+        }.also {
+            answers.removeAt((it + 1) % 4)
+            answers.removeAt((it + 2) % 4)
+        }
+        notifyDataSetChanged()
+    }
 
     inner class AnswerViewHolder(private val binding: ItemAnswerBinding) :
         RecyclerView.ViewHolder(binding.root) {

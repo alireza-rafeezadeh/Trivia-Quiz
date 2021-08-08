@@ -6,6 +6,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/skip_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="skip "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/remove_two_answers"
+        android:layout_width="122dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="omit 2 answers "
+        app:layout_constraintStart_toEndOf="@+id/skip_question"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/question_text_view"
         android:layout_width="wrap_content"

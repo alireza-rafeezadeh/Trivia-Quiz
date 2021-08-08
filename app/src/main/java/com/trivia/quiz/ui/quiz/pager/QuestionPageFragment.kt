@@ -26,6 +26,7 @@ class QuestionPageFragment(
 
     lateinit var timer: CountDownTimer
     var userAnswer = false
+    lateinit var adapter : AnswerRVAdapter
 
     @Inject
     lateinit var quizResult: QuizResult
@@ -74,7 +75,7 @@ class QuestionPageFragment(
     }
 
     private fun initRecyclerView() {
-        val adapter = AnswerRVAdapter(answers) {
+        adapter = AnswerRVAdapter(answers) {
             userAnswer = answers[it].isCorrect
         }
         binding.answersRecyclerView.adapter = adapter
@@ -95,6 +96,13 @@ class QuestionPageFragment(
             quizResult.results.add(userAnswer)
             Log.i("<<radio_tg>>", "setOnClickListeners: $quizResult")
             onCompleteTimer()
+        }
+        binding.skipQuestion.setOnClickListener {
+            onCompleteTimer()
+        }
+
+        binding.removeTwoAnswers.setOnClickListener {
+            adapter.removeTwoAnswers()
         }
     }
 
