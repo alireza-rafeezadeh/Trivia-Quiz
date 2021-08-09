@@ -3,6 +3,7 @@ package com.trivia.quiz.ui
 import androidx.lifecycle.ViewModel
 import com.trivia.quiz.Question
 import com.trivia.quiz.domain.Constants
+import com.trivia.quiz.domain.quiz.AnswerStat
 import com.trivia.quiz.domain.quiz.QuizResult2
 
 
@@ -15,7 +16,7 @@ class QuizSharedViewModel : ViewModel() {
 
     lateinit var substituteQuestion : Question
 
-    var userAnswers : MutableList<QuizResult2> = MutableList(Constants.QUESTIONS_SIZE) {
-        QuizResult2.Blank
+    var userAnswers : MutableList<AnswerStat> = MutableList(Constants.QUESTIONS_SIZE) {
+        QuizResult2.UnViewed
     }
 }

@@ -8,10 +8,12 @@ import androidx.fragment.app.activityViewModels
 import com.trivia.quiz.Question
 import com.trivia.quiz.databinding.FragmentQuestionPageBinding
 import com.trivia.quiz.domain.quiz.Answer
+import com.trivia.quiz.domain.quiz.AnswerStat
 import com.trivia.quiz.domain.quiz.QuizResult
 import com.trivia.quiz.domain.quiz.QuizResult2
 import com.trivia.quiz.ui.QuizSharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.handleCoroutineException
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -28,7 +30,7 @@ class QuestionPageFragment(
 
     lateinit var timer: CountDownTimer
     var userAnswer = false
-    var userAnswer2 = QuizResult2.Blank
+    lateinit var userAnswer2 : AnswerStat
     lateinit var adapter: AnswerRVAdapter
     var timeToAnswer: Long = 10000
     var additionalTime: Long = 0
@@ -50,6 +52,11 @@ class QuestionPageFragment(
             )
         answers.shuffle()
 
+        answers.indexOfFirst { ans ->
+            ans.isCorrect
+        }.also {
+            userAnswer2 = QuizResult2.Blank(it)
+        }
         binding.questionTextView.text = question.question_title
         /*binding.answer1RadioButton.text = answers[1].description
         binding.answer2RadioButton.text = answers[2].description
@@ -86,8 +93,18 @@ class QuestionPageFragment(
     }
 
     private fun initRecyclerView() {
-        adapter = AnswerRVAdapter(answers) {
-            userAnswer = answers[it].isCorrect
+        adapter = AnswerRVAdapter(answers) { userSelectedIndex ->
+            //TODO : make this extensiom funciton
+            answers.indexOfFirst { ans ->
+                ans.isCorrect
+            }.also { correctIndex ->
+                if( userSelectedIndex == correctIndex ) {
+                    userAnswer2 = QuizResult2.Correct(correctIndex)
+                } else {
+                    userAnswer2 = QuizResult2.InCorrect(userSelectedIndex , correctIndex)
+                }
+            }
+
         }
         binding.answersRecyclerView.adapter = adapter
     }
@@ -111,9 +128,9 @@ class QuestionPageFragment(
         }
         binding.skipQuestion.setOnClickListener {
             if (!sharedViewModel.hasSkippedOneQuestion) {
-                sharedViewModel.userAnswers[questionNumber] = QuizResult2.Skipped
+                /*sharedViewModel.userAnswers[questionNumber] = QuizResult2.Skipped
                 sharedViewModel.hasSkippedOneQuestion = true
-                onCompleteTimer()
+                onCompleteTimer()*/
             }
         }
 

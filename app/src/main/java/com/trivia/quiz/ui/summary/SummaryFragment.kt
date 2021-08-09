@@ -30,9 +30,9 @@ class SummaryFragment : ViewBindingFragment<FragmentSummaryBinding>() {
                     is QuizResult2.Correct -> {
                         corrects++
                     }
-                    QuizResult2.Blank -> blanks++
+                    is QuizResult2.Blank -> blanks++
                     is QuizResult2.InCorrect -> inCorrects++
-                    QuizResult2.Skipped -> skippeds++
+                    QuizResult2.UnViewed -> { }
                 }.exhaustive
             }
         }
