@@ -10,5 +10,15 @@
         tools:layout="@layout/fragment_quiz"
         android:id="@+id/quizFragment"
         android:name="com.trivia.quiz.ui.quiz.QuizFragment"
-        android:label="QuizFragment" />
+        android:label="QuizFragment" >
+        <action
+            android:id="@+id/action_quizFragment_to_summaryFragment"
+            app:destination="@id/summaryFragment" />
+    </fragment>
+
+    <fragment
+        tools:layout="@layout/fragment_summary"
+        android:id="@+id/summaryFragment"
+        android:name="com.trivia.quiz.ui.summary.SummaryFragment"
+        android:label="SummaryFragment" />
 </navigation>

@@ -12,5 +12,6 @@ class QuestionPagerAdapter(
 ) : FragmentStateAdapter(fa) {
     override fun getItemCount(): Int = Constants.QUESTIONS_SIZE
     override fun createFragment(position: Int): Fragment =
+        // TODO : Imptove this position here
         QuestionPageFragment(list[position], position,onCompleteTimer)
 }
