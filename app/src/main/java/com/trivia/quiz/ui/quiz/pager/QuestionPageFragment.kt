@@ -4,13 +4,15 @@ import android.os.CountDownTimer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import com.trivia.quiz.Question
 import com.trivia.quiz.databinding.FragmentQuestionPageBinding
 import com.trivia.quiz.domain.quiz.Answer
 import com.trivia.quiz.domain.quiz.QuizResult
+import com.trivia.quiz.domain.quiz.QuizResult2
+import com.trivia.quiz.ui.QuizSharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import kotlin.concurrent.timer
 
 @AndroidEntryPoint
 class QuestionPageFragment(
@@ -26,10 +28,14 @@ class QuestionPageFragment(
 
     lateinit var timer: CountDownTimer
     var userAnswer = false
-    lateinit var adapter : AnswerRVAdapter
-    var timeToAnswer : Long = 10000
-    var additionalTime : Long = 0
-    var progressT : Long = 0
+    var userAnswer2 = QuizResult2.Blank
+    lateinit var adapter: AnswerRVAdapter
+    var timeToAnswer: Long = 10000
+    var additionalTime: Long = 0
+    var progressT: Long = 0
+
+    private val sharedViewModel: QuizSharedViewModel by activityViewModels()
+
 
     @Inject
     lateinit var quizResult: QuizResult
@@ -69,6 +75,7 @@ class QuestionPageFragment(
 
             override fun onFinish() {
                 quizResult.results.add(userAnswer)
+                sharedViewModel.userAnswers[questionNumber] = userAnswer2
                 Log.i("<<radio_tg>>", "setOnClickListeners: $quizResult")
                 onCompleteTimer()
             }
@@ -98,21 +105,32 @@ class QuestionPageFragment(
             timer.cancel()
             //TODO: make it a function
             quizResult.results.add(userAnswer)
+            sharedViewModel.userAnswers[questionNumber] = userAnswer2
             Log.i("<<radio_tg>>", "setOnClickListeners: $quizResult")
             onCompleteTimer()
         }
         binding.skipQuestion.setOnClickListener {
-            onCompleteTimer()
+            if (!sharedViewModel.hasSkippedOneQuestion) {
+                sharedViewModel.userAnswers[questionNumber] = QuizResult2.Skipped
+                sharedViewModel.hasSkippedOneQuestion = true
+                onCompleteTimer()
+            }
         }
 
         binding.removeTwoAnswers.setOnClickListener {
-            adapter.removeTwoAnswers()
+            if (!sharedViewModel.hasRemovedTwoAnsers) {
+                adapter.removeTwoAnswers()
+                sharedViewModel.hasRemovedTwoAnsers = true
+            }
         }
 
         binding.addTenSecondsButton.setOnClickListener {
-            timer.cancel()
-            timeToAnswer = progressT + 10000
-            initCountDownTimer()
+            if (!sharedViewModel.hasAddTenSeconds) {
+                timer.cancel()
+                timeToAnswer = progressT + 10000
+                initCountDownTimer()
+                sharedViewModel.hasAddTenSeconds = true
+            }
         }
     }
 
