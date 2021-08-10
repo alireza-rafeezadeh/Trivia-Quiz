@@ -30,7 +30,7 @@ class QuestionPageFragment(
 
     lateinit var timer: CountDownTimer
     var userAnswer = false
-    lateinit var userAnswer2 : AnswerStat
+    lateinit var userAnswer2: AnswerStat
     lateinit var adapter: AnswerRVAdapter
     var timeToAnswer: Long = 10000
     var additionalTime: Long = 0
@@ -98,10 +98,10 @@ class QuestionPageFragment(
             answers.indexOfFirst { ans ->
                 ans.isCorrect
             }.also { correctIndex ->
-                if( userSelectedIndex == correctIndex ) {
+                if (userSelectedIndex == correctIndex) {
                     userAnswer2 = QuizResult2.Correct(correctIndex)
                 } else {
-                    userAnswer2 = QuizResult2.InCorrect(userSelectedIndex , correctIndex)
+                    userAnswer2 = QuizResult2.InCorrect(userSelectedIndex, correctIndex)
                 }
             }
 
@@ -153,7 +153,9 @@ class QuestionPageFragment(
 
     override fun onDestroy() {
         super.onDestroy()
-        timer.cancel()
+        if (::timer.isInitialized) {
+            timer.cancel()
+        }
     }
 
 }

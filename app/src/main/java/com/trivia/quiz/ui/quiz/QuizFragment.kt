@@ -21,7 +21,7 @@ class QuizFragment : ViewBindingFragment<FragmentQuizBinding>() {
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentQuizBinding
         get() = FragmentQuizBinding::inflate
     private val viewModel: QuizViewModel by viewModels()
-    private val sharedViewModel: QuizSharedViewModel by activityViewModels()
+    val sharedViewModel: QuizSharedViewModel by activityViewModels()
 
     override fun setup() {
 
