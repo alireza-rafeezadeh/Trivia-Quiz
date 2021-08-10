@@ -1,4 +1,4 @@
-package com.trivia.quiz.ui
+package com.trivia.quiz
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

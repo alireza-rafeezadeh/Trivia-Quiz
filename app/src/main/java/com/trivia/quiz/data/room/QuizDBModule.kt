@@ -2,6 +2,7 @@ package com.trivia.quiz.data.room
 
 import android.content.Context
 import androidx.room.Room
+import com.trivia.quiz.QuestionDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,5 +20,11 @@ object QuizDBModule {
         return Room.databaseBuilder(context, AppDatabase::class.java, "TriviaDB.db")
             .createFromAsset("TriviaDB.db")
             .build()
+    }
+
+    @Singleton
+    @Provides
+    fun providesQuestionDao(appDatabase : AppDatabase) : QuestionDao {
+        return appDatabase.questionDao()
     }
 }

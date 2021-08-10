@@ -2,6 +2,6 @@ package com.trivia.quiz.data.datasource.offline.quiz
 
 import com.trivia.quiz.Question
 
-interface QuizOfflineDataSource {
+interface QuizDataSource {
     suspend fun getQuestions() : List<Question>
 }
