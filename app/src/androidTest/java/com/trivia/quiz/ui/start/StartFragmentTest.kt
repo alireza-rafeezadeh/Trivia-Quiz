@@ -9,6 +9,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.filters.MediumTest
 import com.trivia.quiz.R
+import com.trivia.quiz.util.UITestUtil
 import com.trivia.quiz.util.launchFragmentInHiltContainer
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -27,23 +28,15 @@ class StartFragmentTest {
     @Test
     fun navigatesToQuizFragment() {
         TestNavHostController(getApplicationContext()).also {
-            launchFragment(it)
-            onView(withId(R.id.action_button)).check(matches(isDisplayed()))
+            UITestUtil.launchFragment(it)
         }
     }
 
     @Test
     fun displayViewsInUI() {
         TestNavHostController(getApplicationContext()).also {
-            launchFragment(it)
-        }
-    }
-
-    private fun launchFragment(navController: TestNavHostController) {
-        launchFragmentInHiltContainer<StartFragment> {
-            navController.setGraph(R.navigation.navigation_main)
-            navController.setCurrentDestination(R.id.startFragment)
-            Navigation.setViewNavController(requireView(), navController)
+            UITestUtil.launchFragment(it)
+            onView(withId(R.id.action_button)).check(matches(isDisplayed()))
         }
     }
 }
