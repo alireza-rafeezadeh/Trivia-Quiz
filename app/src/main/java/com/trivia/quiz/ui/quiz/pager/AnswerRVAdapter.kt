@@ -3,6 +3,7 @@ package com.trivia.quiz.ui.quiz.pager
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.trivia.quiz.R
 import com.trivia.quiz.databinding.ItemAnswerBinding
@@ -77,11 +78,13 @@ class AnswerRVAdapter(
         }
 
         fun unSelectItem() {
-            binding.root.setBackgroundColor(Color.WHITE)
+            binding.root.background =
+                ContextCompat.getDrawable(binding.root.context, R.drawable.curved_white_bg)
         }
 
         fun selectItem() {
-            binding.root.setBackgroundColor(Color.GRAY)
+            binding.root.background =
+                ContextCompat.getDrawable(binding.root.context, R.drawable.item_selected_bg)
         }
     }
 }

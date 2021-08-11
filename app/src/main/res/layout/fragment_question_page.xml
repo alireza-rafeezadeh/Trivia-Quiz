@@ -1,82 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/citrine_white">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/skip_question"
-        android:layout_width="wrap_content"
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="skip "
+        android:progressTint="#64B5F6"
+        app:layout_constraintBottom_toTopOf="@+id/next_button"
+        app:layout_constraintEnd_toEndOf="@+id/next_button"
+        app:layout_constraintStart_toStartOf="@+id/next_button"
+        app:layout_constraintTop_toBottomOf="@+id/answers_recycler_view"
+        app:layout_constraintVertical_bias="1.0"
+        tools:progress="30" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="328dp"
+        android:layout_height="128dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/curved_white_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/remove_two_answers"
-        android:layout_width="122dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="omit 2 answers "
-        app:layout_constraintStart_toEndOf="@+id/skip_question"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/add_ten_seconds_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="+10 seconds"
-        app:layout_constraintStart_toEndOf="@+id/remove_two_answers"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/skip_question" />
 
     <TextView
         android:id="@+id/question_text_view"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:text="Question Title"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/hurricane"
+        app:layout_constraintBottom_toBottomOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="@+id/view"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toTopOf="@+id/view"
+        app:layout_constraintVertical_bias="0.0" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/answers_recycler_view"
-        android:layout_width="406dp"
+        android:layout_width="0dp"
         android:layout_height="331dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/question_text_view"
+        app:layout_constraintTop_toBottomOf="@+id/view"
+        app:layout_constraintVertical_bias="0.0"
         tools:itemCount="4"
         tools:listitem="@layout/item_answer" />
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/skip_question"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="@color/sulu"
+        android:text="skip "
+        android:textColor="@color/scorpion"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/remove_two_answers"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:textSize="12sp"
+        android:id="@+id/remove_two_answers"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="@color/sulu"
+        android:text="omit 2 answers "
+        android:textColor="@color/scorpion"
+        app:layout_constraintBottom_toBottomOf="@+id/skip_question"
+        app:layout_constraintEnd_toStartOf="@+id/add_ten_seconds_button"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/skip_question"
+        app:layout_constraintTop_toTopOf="@+id/skip_question" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/next_button"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="next"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/progressBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ProgressBar
-        tools:progress="30"
-        android:progressTint="#64B5F6"
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/salomie"
+        android:text="proceed"
+        android:textColor="@color/scorpion"
+        app:cornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/answers_recycler_view"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <com.google.android.material.button.MaterialButton
+        android:textSize="12sp"
+        android:id="@+id/add_ten_seconds_button"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/sulu"
+        android:text="+10 seconds"
+        android:textColor="@color/scorpion"
+        app:layout_constraintBottom_toBottomOf="@+id/remove_two_answers"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/remove_two_answers"
+        app:layout_constraintTop_toTopOf="@+id/remove_two_answers" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
