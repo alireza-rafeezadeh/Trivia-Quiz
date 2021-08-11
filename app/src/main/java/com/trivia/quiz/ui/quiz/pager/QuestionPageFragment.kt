@@ -4,8 +4,11 @@ import android.os.CountDownTimer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import com.google.android.material.button.MaterialButton
 import com.trivia.quiz.Question
+import com.trivia.quiz.R
 import com.trivia.quiz.databinding.FragmentQuestionPageBinding
 import com.trivia.quiz.domain.quiz.Answer
 import com.trivia.quiz.domain.quiz.AnswerStat
@@ -13,12 +16,11 @@ import com.trivia.quiz.domain.quiz.QuizResult
 import com.trivia.quiz.domain.quiz.QuizResult2
 import com.trivia.quiz.ui.QuizSharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.handleCoroutineException
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class QuestionPageFragment(
-    val question: Question,
+    var question: Question,
     val questionNumber: Int,
     val onCompleteTimer: () -> Unit
 ) : ViewBindingFragment<FragmentQuestionPageBinding>() {
@@ -43,6 +45,35 @@ class QuestionPageFragment(
     lateinit var quizResult: QuizResult
 
     override fun setup() {
+        /*binding.answer1RadioButton.text = answers[1].description
+        binding.answer2RadioButton.text = answers[2].description
+        binding.answer3RadioButton.text = answers[3].description
+        binding.answer4RadioButton.text = answers[3].description*/
+
+        disableButtons()
+        setOnClickListeners()
+        initTitle()
+        initRecyclerView()
+    }
+
+    private fun disableButtons() {
+        if (sharedViewModel.hasAddTenSeconds) {
+            disableButton(binding.addTenSecondsButton)
+        }
+        if (sharedViewModel.hasSkippedOneQuestion) {
+            disableButton(binding.skipQuestion)
+        }
+        if (sharedViewModel.hasRemovedTwoAnsers) {
+            disableButton(binding.removeTwoAnswers)
+        }
+    }
+
+    private fun disableButton(button: MaterialButton) {
+        button.backgroundTintList =
+            ContextCompat.getColorStateList(requireContext(), R.color.nobel)
+    }
+
+    private fun initTitle() {
         answers =
             mutableListOf(
                 Answer(question.correct_answer, true),
@@ -58,13 +89,6 @@ class QuestionPageFragment(
             userAnswer2 = QuizResult2.Blank(it)
         }
         binding.questionTextView.text = question.question_title
-        /*binding.answer1RadioButton.text = answers[1].description
-        binding.answer2RadioButton.text = answers[2].description
-        binding.answer3RadioButton.text = answers[3].description
-        binding.answer4RadioButton.text = answers[3].description*/
-
-        initRecyclerView()
-        setOnClickListeners()
     }
 
     override fun onResume() {
@@ -129,13 +153,20 @@ class QuestionPageFragment(
         binding.skipQuestion.setOnClickListener {
             if (!sharedViewModel.hasSkippedOneQuestion) {
                 /*sharedViewModel.userAnswers[questionNumber] = QuizResult2.Skipped
-                sharedViewModel.hasSkippedOneQuestion = true
                 onCompleteTimer()*/
+                disableButton(binding.skipQuestion)
+                sharedViewModel.hasSkippedOneQuestion = true
+                question = sharedViewModel.substituteQuestion
+                timer.cancel()
+                initCountDownTimer()
+                initTitle()
+                initRecyclerView()
             }
         }
 
         binding.removeTwoAnswers.setOnClickListener {
             if (!sharedViewModel.hasRemovedTwoAnsers) {
+                disableButton(binding.removeTwoAnswers)
                 adapter.removeTwoAnswers()
                 sharedViewModel.hasRemovedTwoAnsers = true
             }
@@ -143,6 +174,7 @@ class QuestionPageFragment(
 
         binding.addTenSecondsButton.setOnClickListener {
             if (!sharedViewModel.hasAddTenSeconds) {
+                disableButton(binding.addTenSecondsButton)
                 timer.cancel()
                 timeToAnswer = progressT + 10000
                 initCountDownTimer()

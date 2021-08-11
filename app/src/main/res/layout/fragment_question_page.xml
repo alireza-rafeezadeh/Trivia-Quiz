@@ -65,6 +65,7 @@
         tools:listitem="@layout/item_answer" />
 
     <com.google.android.material.button.MaterialButton
+        app:cornerRadius="@dimen/button_corner_radius"
         android:id="@+id/skip_question"
         android:layout_width="0dp"
         android:layout_height="54dp"
@@ -82,6 +83,7 @@
 
 
     <com.google.android.material.button.MaterialButton
+        app:cornerRadius="@dimen/button_corner_radius"
         android:textSize="12sp"
         android:id="@+id/remove_two_answers"
         android:layout_width="0dp"
@@ -100,14 +102,14 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/next_button"
         android:layout_width="0dp"
-        android:layout_height="55dp"
+        android:layout_height="60dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/salomie"
         android:text="proceed"
         android:textColor="@color/scorpion"
-        app:cornerRadius="12dp"
+        app:cornerRadius="@dimen/button_corner_radius"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.489"
@@ -116,6 +118,7 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <com.google.android.material.button.MaterialButton
+        app:cornerRadius="@dimen/button_corner_radius"
         android:textSize="12sp"
         android:id="@+id/add_ten_seconds_button"
         android:layout_width="0dp"
