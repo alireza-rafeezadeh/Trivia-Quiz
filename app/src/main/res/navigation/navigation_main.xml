@@ -3,8 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_main"
-    app:startDestination="@id/quizFragment">
+    app:startDestination="@id/startFragment">
 
+    <fragment
+        tools:layout="@layout/fragment_start"
+        android:id="@+id/startFragment"
+        android:name="com.trivia.quiz.ui.start.StartFragment"
+        android:label="StartFragment" >
+        <action
+            android:id="@+id/action_startFragment_to_quizFragment"
+            app:destination="@id/quizFragment" />
+    </fragment>
 
     <fragment
         tools:layout="@layout/fragment_quiz"
@@ -21,4 +30,5 @@
         android:id="@+id/summaryFragment"
         android:name="com.trivia.quiz.ui.summary.SummaryFragment"
         android:label="SummaryFragment" />
+
 </navigation>
