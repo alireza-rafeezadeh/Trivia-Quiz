@@ -29,6 +29,10 @@
         tools:layout="@layout/fragment_summary"
         android:id="@+id/summaryFragment"
         android:name="com.trivia.quiz.ui.summary.SummaryFragment"
-        android:label="SummaryFragment" />
+        android:label="SummaryFragment" >
+        <action
+            android:id="@+id/action_summaryFragment_to_startFragment"
+            app:destination="@id/startFragment" />
+    </fragment>
 
 </navigation>

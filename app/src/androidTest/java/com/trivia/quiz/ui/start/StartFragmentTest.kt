@@ -1,6 +1,5 @@
 package com.trivia.quiz.ui.start
 
-import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.espresso.Espresso.onView
@@ -11,8 +10,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.filters.MediumTest
 import com.google.common.truth.Truth
 import com.trivia.quiz.R
-import com.trivia.quiz.util.UITestUtil
-import com.trivia.quiz.util.launchFragmentInHiltContainer
+import com.trivia.quiz.util.UITestUtil.launchFragment
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -30,7 +28,7 @@ class StartFragmentTest {
     @Test
     fun navigatesToQuizFragment() {
         TestNavHostController(getApplicationContext()).also {
-            UITestUtil.launchFragment(it)
+            launchFragment<StartFragment>(it,R.id.startFragment)
             onView(withId(R.id.action_button)).perform(click())
             Truth.assertThat(it.currentDestination?.id).isEqualTo(R.id.quizFragment)
         }
@@ -39,7 +37,7 @@ class StartFragmentTest {
     @Test
     fun displayViewsInUI() {
         TestNavHostController(getApplicationContext()).also {
-            UITestUtil.launchFragment(it)
+            launchFragment<StartFragment>(it,R.id.startFragment)
             onView(withId(R.id.action_button)).check(matches(isDisplayed()))
         }
     }

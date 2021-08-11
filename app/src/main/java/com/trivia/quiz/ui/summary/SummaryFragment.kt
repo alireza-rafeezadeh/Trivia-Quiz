@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.trivia.quiz.R
 import com.trivia.quiz.databinding.FragmentSummaryBinding
 import com.trivia.quiz.domain.quiz.QuizResult2
 import com.trivia.quiz.ui.QuizSharedViewModel
@@ -37,10 +39,17 @@ class SummaryFragment : ViewBindingFragment<FragmentSummaryBinding>() {
             }
         }
 
+        setClickListeners()
         initRecyclerView()
     }
 
-    fun initRecyclerView() {
+    private fun setClickListeners() {
+        binding.startOverButton.setOnClickListener {
+            findNavController().navigate(R.id.action_summaryFragment_to_startFragment)
+        }
+    }
+
+    private fun initRecyclerView() {
         val adapter = SummaryRVAdapter(sharedViewModel.userAnswers)
         binding.summaryRVAdapter.adapter = adapter
     }
