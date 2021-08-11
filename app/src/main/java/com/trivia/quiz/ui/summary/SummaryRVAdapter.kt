@@ -19,7 +19,12 @@ class SummaryRVAdapter(private val userAnswers: MutableList<AnswerStat>) :
         }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as ItemViewHolder).bind(userAnswers[position])
+        if (position > 0) {
+            (holder as ItemViewHolder).bind(userAnswers[position-1])
+        } else {
+            (holder as ItemViewHolder).bindFirstRow()
+        }
+
     }
 
     override fun getItemCount(): Int = userAnswers.size
@@ -30,7 +35,7 @@ class SummaryRVAdapter(private val userAnswers: MutableList<AnswerStat>) :
             with(binding) {
 //                questionNumberTextView.text = quizResult2.
                 questionNumberTextView.text = adapterPosition.toString()
-                when(answerStat) {
+                when (answerStat) {
                     is QuizResult2.Blank -> {
                         userAnswerTextView.text = "-"
                         correctAnswerTextView.text = answerStat.getCorrectAnswerString()
@@ -46,9 +51,19 @@ class SummaryRVAdapter(private val userAnswers: MutableList<AnswerStat>) :
                         correctAnswerTextView.text = answerStat.getCorrectAnswerString()
                         answerStatusTextView.text = answerStat.title
                     }
-                    QuizResult2.UnViewed -> { }
+                    QuizResult2.UnViewed -> {
+                    }
                 }.exhaustive
 
+            }
+        }
+
+        fun bindFirstRow() {
+            with(binding) {
+                questionNumberTextView.text = "#"
+                userAnswerTextView.text = "your answer"
+                correctAnswerTextView.text = "correct answer"
+                answerStatusTextView.text = "status"
             }
         }
     }

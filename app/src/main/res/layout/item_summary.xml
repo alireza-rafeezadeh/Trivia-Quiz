@@ -7,40 +7,52 @@
 
     <TextView
         android:id="@+id/question_number_text_view"
-        android:layout_width="wrap_content"
+        android:layout_width="19dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="TextView"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/user_answer_text_view"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="#" />
 
     <TextView
         android:id="@+id/user_answer_text_view"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:text="TextView"
+        app:layout_constraintEnd_toStartOf="@+id/correct_answer_text_view"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/question_number_text_view"
         app:layout_constraintTop_toTopOf="@+id/question_number_text_view" />
 
     <TextView
         android:id="@+id/correct_answer_text_view"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:text="TextView"
+        app:layout_constraintEnd_toStartOf="@+id/answer_status_text_view"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/user_answer_text_view"
-        app:layout_constraintTop_toTopOf="@+id/user_answer_text_view" />
+        app:layout_constraintTop_toTopOf="@+id/question_number_text_view" />
 
     <TextView
         android:id="@+id/answer_status_text_view"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
         android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/correct_answer_text_view"
-        app:layout_constraintTop_toTopOf="@+id/correct_answer_text_view" />
+        app:layout_constraintTop_toTopOf="@+id/question_number_text_view" />
 </androidx.constraintlayout.widget.ConstraintLayout>
