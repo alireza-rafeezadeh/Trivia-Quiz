@@ -15,9 +15,8 @@ import com.trivia.quiz.util.correctAnswerIndex
 class AnswerRVAdapter(
     private val answers: MutableList<Answer>,
     private val onClick: (index: Int) -> Unit
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<AnswerRVAdapter.AnswerViewHolder>() {
 
-    //TODO: recycler view view holder
     var oldSelectedItem = -1
     var selectedItem = -1
     lateinit var wrongAnswers: Set<Int>
@@ -29,8 +28,8 @@ class AnswerRVAdapter(
             AnswerViewHolder(it)
         }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as AnswerViewHolder).bindView(answers[position])
+    override fun onBindViewHolder(holder: AnswerRVAdapter.AnswerViewHolder, position: Int) {
+        holder.bindView(answers[position])
         if (position == selectedItem) {
             holder.selectItem()
         } else {

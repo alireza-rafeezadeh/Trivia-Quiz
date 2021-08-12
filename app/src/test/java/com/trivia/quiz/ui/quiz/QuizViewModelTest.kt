@@ -10,6 +10,8 @@ import org.junit.Before
 import org.junit.Test
 import com.google.common.truth.Truth.assertThat
 import com.trivia.quiz.Question
+import com.trivia.quiz.domain.ResultWrapper
+import com.trivia.quiz.domain.Success
 import com.trivia.quiz.util.QuizMockData
 import kotlinx.coroutines.delay
 import org.junit.Assert.*
@@ -39,13 +41,15 @@ class QuizViewModelTest {
 
     @Test
     fun `questions should return success`() = runBlocking {
-        val observer = Observer<List<Question>> {
+        val observer = Observer<ResultWrapper<List<Question>>> {
             assertThat(viewModel.questionsLiveData.value).isEqualTo(
-                QuizMockData.getQuestions()
+                Success(QuizMockData.getQuestions())
             )
         }
-        viewModel.questionsLiveData.observeForever(observer)
-        viewModel.getQuestions()
-        viewModel.questionsLiveData.removeObserver(observer)
+        viewModel.run {
+            questionsLiveData.observeForever(observer)
+            getQuestions()
+            questionsLiveData.removeObserver(observer)
+        }
     }
 }

@@ -31,8 +31,7 @@ class QuestionPageFragment(
 //    lateinit var answers: MutableList<Answer>
 
     lateinit var timer: CountDownTimer
-//    var userAnswer = false
-    lateinit var userAnswer2: AnswerStat
+    lateinit var userAnswer: AnswerStat
     lateinit var adapter: AnswerRVAdapter
     var timeToAnswer: Long = 10000
     var additionalTime: Long = 0
@@ -71,7 +70,7 @@ class QuestionPageFragment(
     private fun initTitle() {
         viewModel.getShuffledAnswers(question)
             .correctAnswerIndex().also {
-                userAnswer2 = Blank(it)
+                userAnswer = Blank(it)
             }
         binding.questionTextView.text = question.question_title
     }
@@ -91,7 +90,7 @@ class QuestionPageFragment(
             }
 
             override fun onFinish() {
-                sharedViewModel.userAnswers[questionNumber] = userAnswer2
+                sharedViewModel.userAnswers[questionNumber] = userAnswer
                 onCompleteTimer()
             }
 
@@ -102,12 +101,11 @@ class QuestionPageFragment(
 
     private fun initRecyclerView() {
         adapter = AnswerRVAdapter(viewModel.answers) { userSelectedIndex ->
-            //TODO : make this extensiom funciton
             viewModel.answers.correctAnswerIndex().also { correctIndex ->
                 if (userSelectedIndex == correctIndex) {
-                    userAnswer2 = Correct(correctIndex)
+                    userAnswer = Correct(correctIndex)
                 } else {
-                    userAnswer2 = InCorrect(userSelectedIndex, correctIndex)
+                    userAnswer = InCorrect(userSelectedIndex, correctIndex)
                 }
             }
 
@@ -126,8 +124,7 @@ class QuestionPageFragment(
 
         binding.nextButton.setOnClickListener {
             timer.cancel()
-            //TODO: make it a function
-            sharedViewModel.userAnswers[questionNumber] = userAnswer2
+            sharedViewModel.userAnswers[questionNumber] = userAnswer
             onCompleteTimer()
         }
         binding.skipQuestion.setOnClickListener {
