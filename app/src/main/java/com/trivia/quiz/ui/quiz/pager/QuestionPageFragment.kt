@@ -1,7 +1,6 @@
 package com.trivia.quiz.ui.quiz.pager
 
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -11,11 +10,13 @@ import com.google.android.material.button.MaterialButton
 import com.trivia.quiz.Question
 import com.trivia.quiz.R
 import com.trivia.quiz.databinding.FragmentQuestionPageBinding
-import com.trivia.quiz.domain.quiz.*
+import com.trivia.quiz.domain.quiz.AnswerStat
+import com.trivia.quiz.domain.quiz.Blank
+import com.trivia.quiz.domain.quiz.Correct
+import com.trivia.quiz.domain.quiz.InCorrect
 import com.trivia.quiz.ui.QuizSharedViewModel
 import com.trivia.quiz.util.correctAnswerIndex
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class QuestionPageFragment(
@@ -30,7 +31,7 @@ class QuestionPageFragment(
 //    lateinit var answers: MutableList<Answer>
 
     lateinit var timer: CountDownTimer
-    var userAnswer = false
+//    var userAnswer = false
     lateinit var userAnswer2: AnswerStat
     lateinit var adapter: AnswerRVAdapter
     var timeToAnswer: Long = 10000
@@ -40,8 +41,8 @@ class QuestionPageFragment(
     private val sharedViewModel: QuizSharedViewModel by activityViewModels()
     private val viewModel: QuestionViewModel by viewModels()
 
-    @Inject
-    lateinit var quizResult: QuizResult
+//    @Inject
+//    lateinit var quizResult: QuizResult
 
     override fun setup() {
         disableButtons()
@@ -78,6 +79,7 @@ class QuestionPageFragment(
     override fun onResume() {
         super.onResume()
         initCountDownTimer()
+        disableButtons()
     }
 
     private fun initCountDownTimer() {
@@ -89,9 +91,7 @@ class QuestionPageFragment(
             }
 
             override fun onFinish() {
-                quizResult.results.add(userAnswer)
                 sharedViewModel.userAnswers[questionNumber] = userAnswer2
-                Log.i("<<radio_tg>>", "setOnClickListeners: $quizResult")
                 onCompleteTimer()
             }
 
@@ -127,9 +127,7 @@ class QuestionPageFragment(
         binding.nextButton.setOnClickListener {
             timer.cancel()
             //TODO: make it a function
-            quizResult.results.add(userAnswer)
             sharedViewModel.userAnswers[questionNumber] = userAnswer2
-            Log.i("<<radio_tg>>", "setOnClickListeners: $quizResult")
             onCompleteTimer()
         }
         binding.skipQuestion.setOnClickListener {
