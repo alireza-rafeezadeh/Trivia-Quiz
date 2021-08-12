@@ -1,4 +1,4 @@
-package com.trivia.quiz.data.datasource.offline.quiz
+package com.trivia.quiz.data.datasource.local.quiz
 
 import dagger.Binds
 import dagger.Module
@@ -8,11 +8,11 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class QuizOfflineDataSourceModule {
+abstract class QuizLocalDataSourceModule {
 
     @Singleton
     @Binds
-    abstract fun providesQuizOfflineDataSource(
+    abstract fun providesQuizLocalDataSource(
         quizLocalDataSource: QuizLocalDataSource
     ): QuizDataSource
 }

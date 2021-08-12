@@ -7,4 +7,15 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="citrine_white">#FBF0E1</color>
+    <color name="salomie">#FFE587</color>
+    <color name="sandy_brown">#F3A454</color>
+    <color name="sulu">#B5F191</color>
+    <color name="scorpion">#595959</color>
+    <color name="hurricane">#857E7E</color>
+    <color name="mercury">#E2E0E0</color>
+    <color name="pattens_blue">#D7EEFF</color>
+    <color name="nobel">#B5B5B5</color>
+
 </resources>

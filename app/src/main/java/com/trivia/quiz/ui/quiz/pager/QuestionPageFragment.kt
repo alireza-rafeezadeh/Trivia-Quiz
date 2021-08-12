@@ -1,24 +1,26 @@
 package com.trivia.quiz.ui.quiz.pager
 
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import com.google.android.material.button.MaterialButton
 import com.trivia.quiz.Question
+import com.trivia.quiz.R
 import com.trivia.quiz.databinding.FragmentQuestionPageBinding
-import com.trivia.quiz.domain.quiz.Answer
 import com.trivia.quiz.domain.quiz.AnswerStat
-import com.trivia.quiz.domain.quiz.QuizResult
-import com.trivia.quiz.domain.quiz.QuizResult2
+import com.trivia.quiz.domain.quiz.Blank
+import com.trivia.quiz.domain.quiz.Correct
+import com.trivia.quiz.domain.quiz.InCorrect
 import com.trivia.quiz.ui.QuizSharedViewModel
+import com.trivia.quiz.util.correctAnswerIndex
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.handleCoroutineException
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class QuestionPageFragment(
-    val question: Question,
+    var question: Question,
     val questionNumber: Int,
     val onCompleteTimer: () -> Unit
 ) : ViewBindingFragment<FragmentQuestionPageBinding>() {
@@ -26,50 +28,92 @@ class QuestionPageFragment(
     override val bindingInflater:
                 (LayoutInflater, ViewGroup?, Boolean) -> FragmentQuestionPageBinding
         get() = FragmentQuestionPageBinding::inflate
-    lateinit var answers: MutableList<Answer>
 
-    lateinit var timer: CountDownTimer
-    var userAnswer = false
-    lateinit var userAnswer2: AnswerStat
-    lateinit var adapter: AnswerRVAdapter
-    var timeToAnswer: Long = 10000
-    var additionalTime: Long = 0
-    var progressT: Long = 0
-
+    private lateinit var timer: CountDownTimer
+    private lateinit var userAnswer: AnswerStat
+    private lateinit var adapter: AnswerRVAdapter
+    private var timeToAnswer: Long = 10000
+    private var progressT: Long = 0
     private val sharedViewModel: QuizSharedViewModel by activityViewModels()
-
-
-    @Inject
-    lateinit var quizResult: QuizResult
+    private val viewModel: QuestionViewModel by viewModels()
 
     override fun setup() {
-        answers =
-            mutableListOf(
-                Answer(question.correct_answer, true),
-                Answer(question.answer1),
-                Answer(question.answer2),
-                Answer(question.answer3)
-            )
-        answers.shuffle()
-
-        answers.indexOfFirst { ans ->
-            ans.isCorrect
-        }.also {
-            userAnswer2 = QuizResult2.Blank(it)
-        }
-        binding.questionTextView.text = question.question_title
-        /*binding.answer1RadioButton.text = answers[1].description
-        binding.answer2RadioButton.text = answers[2].description
-        binding.answer3RadioButton.text = answers[3].description
-        binding.answer4RadioButton.text = answers[3].description*/
-
-        initRecyclerView()
+        toggleButtonColors()
         setOnClickListeners()
+        initTitle()
+        initRecyclerView()
     }
 
     override fun onResume() {
         super.onResume()
         initCountDownTimer()
+        toggleButtonColors()
+    }
+
+    private fun toggleButtonColors() {
+        if (sharedViewModel.extraPowers.hasAddTenSeconds) {
+            disableButton(binding.addTenSecondsButton)
+        }
+        if (sharedViewModel.extraPowers.hasSkippedOneQuestion) {
+            disableButton(binding.skipQuestion)
+        }
+        if (sharedViewModel.extraPowers.hasRemovedTwoAnsers) {
+            disableButton(binding.removeTwoAnswers)
+        }
+    }
+
+    private fun setOnClickListeners() {
+        binding.nextButton.setOnClickListener {
+            if (!::timer.isInitialized)
+                return@setOnClickListener
+            timer.cancel()
+            sharedViewModel.userAnswers[questionNumber] = userAnswer
+            onCompleteTimer()
+        }
+        binding.skipQuestion.setOnClickListener {
+            if (!sharedViewModel.extraPowers.hasSkippedOneQuestion) {
+                /*sharedViewModel.userAnswers[questionNumber] = QuizResult2.Skipped
+                onCompleteTimer()*/
+                disableButton(binding.skipQuestion)
+                sharedViewModel.extraPowers.hasSkippedOneQuestion = true
+                question = sharedViewModel.substituteQuestion
+                timer.cancel()
+                initCountDownTimer()
+                initTitle()
+                initRecyclerView()
+            }
+        }
+
+        binding.removeTwoAnswers.setOnClickListener {
+            if (!sharedViewModel.extraPowers.hasRemovedTwoAnsers) {
+                disableButton(binding.removeTwoAnswers)
+                adapter.removeTwoAnswers()
+                sharedViewModel.extraPowers.hasRemovedTwoAnsers = true
+            }
+        }
+
+        binding.addTenSecondsButton.setOnClickListener {
+            if (!sharedViewModel.extraPowers.hasAddTenSeconds) {
+                disableButton(binding.addTenSecondsButton)
+                timer.cancel()
+                timeToAnswer = progressT + 10000
+                initCountDownTimer()
+                sharedViewModel.extraPowers.hasAddTenSeconds = true
+            }
+        }
+    }
+
+    private fun initTitle() {
+        viewModel.getShuffledAnswers(question)
+            .correctAnswerIndex().also {
+                userAnswer = Blank(it)
+            }
+        binding.questionTextView.text = question.question_title
+    }
+
+    private fun disableButton(button: MaterialButton) {
+        button.backgroundTintList =
+            ContextCompat.getColorStateList(requireContext(), R.color.nobel)
     }
 
     private fun initCountDownTimer() {
@@ -81,9 +125,7 @@ class QuestionPageFragment(
             }
 
             override fun onFinish() {
-                quizResult.results.add(userAnswer)
-                sharedViewModel.userAnswers[questionNumber] = userAnswer2
-                Log.i("<<radio_tg>>", "setOnClickListeners: $quizResult")
+                sharedViewModel.userAnswers[questionNumber] = userAnswer
                 onCompleteTimer()
             }
 
@@ -93,15 +135,12 @@ class QuestionPageFragment(
     }
 
     private fun initRecyclerView() {
-        adapter = AnswerRVAdapter(answers) { userSelectedIndex ->
-            //TODO : make this extensiom funciton
-            answers.indexOfFirst { ans ->
-                ans.isCorrect
-            }.also { correctIndex ->
+        adapter = AnswerRVAdapter(viewModel.answers) { userSelectedIndex ->
+            viewModel.answers.correctAnswerIndex().also { correctIndex ->
                 if (userSelectedIndex == correctIndex) {
-                    userAnswer2 = QuizResult2.Correct(correctIndex)
+                    userAnswer = Correct(correctIndex)
                 } else {
-                    userAnswer2 = QuizResult2.InCorrect(userSelectedIndex, correctIndex)
+                    userAnswer = InCorrect(userSelectedIndex, correctIndex)
                 }
             }
 
@@ -109,47 +148,6 @@ class QuestionPageFragment(
         binding.answersRecyclerView.adapter = adapter
     }
 
-    private fun setOnClickListeners() {
-        /*binding.answersRadioGroup.setOnCheckedChangeListener { radioGroup, index ->
-//            if (answers[index].isCorrect) {
-//                // QuizResult.getInstance().
-//            }
-            quizResult.results.add(true)
-            Log.i("<<radio_tg>>", "setOnClickListeners: $quizResult")
-        }*/
-
-        binding.nextButton.setOnClickListener {
-            timer.cancel()
-            //TODO: make it a function
-            quizResult.results.add(userAnswer)
-            sharedViewModel.userAnswers[questionNumber] = userAnswer2
-            Log.i("<<radio_tg>>", "setOnClickListeners: $quizResult")
-            onCompleteTimer()
-        }
-        binding.skipQuestion.setOnClickListener {
-            if (!sharedViewModel.hasSkippedOneQuestion) {
-                /*sharedViewModel.userAnswers[questionNumber] = QuizResult2.Skipped
-                sharedViewModel.hasSkippedOneQuestion = true
-                onCompleteTimer()*/
-            }
-        }
-
-        binding.removeTwoAnswers.setOnClickListener {
-            if (!sharedViewModel.hasRemovedTwoAnsers) {
-                adapter.removeTwoAnswers()
-                sharedViewModel.hasRemovedTwoAnsers = true
-            }
-        }
-
-        binding.addTenSecondsButton.setOnClickListener {
-            if (!sharedViewModel.hasAddTenSeconds) {
-                timer.cancel()
-                timeToAnswer = progressT + 10000
-                initCountDownTimer()
-                sharedViewModel.hasAddTenSeconds = true
-            }
-        }
-    }
 
     override fun onDestroy() {
         super.onDestroy()

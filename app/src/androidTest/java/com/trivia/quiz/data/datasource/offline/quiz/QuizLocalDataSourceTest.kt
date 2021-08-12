@@ -7,8 +7,10 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth
 import com.trivia.quiz.QuestionDao
+import com.trivia.quiz.data.datasource.local.quiz.QuizLocalDataSource
 import com.trivia.quiz.data.room.AppDatabase
 import com.trivia.quiz.domain.Constants
+import com.trivia.quiz.domain.Success
 import com.trivia.quiz.util.AndroidAppCoroutineRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -43,9 +45,11 @@ class QuizLocalDataSourceTest {
     }
 
     @Test
-    fun getQuestions() = runBlockingTest  {
-        quizLocalDataSource.getQuestions().also { questions ->
-            Truth.assertThat(questions.size).isEqualTo(Constants.QUESTIONS_SIZE)
+    fun getQuestions() = runBlockingTest {
+        quizLocalDataSource.getQuestions().also { result ->
+            if (result is Success) {
+                Truth.assertThat(result.data.size).isEqualTo(Constants.QUESTIONS_SIZE)
+            }
         }
     }
 }
