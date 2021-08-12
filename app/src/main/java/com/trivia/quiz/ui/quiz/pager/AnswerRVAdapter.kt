@@ -2,6 +2,7 @@ package com.trivia.quiz.ui.quiz.pager
 
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +20,7 @@ class AnswerRVAdapter(
     //TODO: recycler view view holder
     var oldSelectedItem = -1
     var selectedItem = -1
+    lateinit var wrongAnswers: Set<Int>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         ItemAnswerBinding.inflate(
@@ -29,14 +31,14 @@ class AnswerRVAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as AnswerViewHolder).bindView(answers[position])
-//        if (position == oldSelectedItem) {
-//            holder.unSelectItem()
-//        }
         if (position == selectedItem) {
             holder.selectItem()
         } else {
             holder.unSelectItem()
+        }
 
+        if (::wrongAnswers.isInitialized && wrongAnswers.contains(position)) {
+            holder.revealWrongAnswer()
         }
 
     }
@@ -46,8 +48,7 @@ class AnswerRVAdapter(
     fun removeTwoAnswers() {
 
         answers.correctAnswerIndex().also {
-            answers.removeAt((it + 1) % 4)
-            answers.removeAt((it + 2) % 4)
+            wrongAnswers = setOf((it + 1) % 4, (it + 2) % 4)
         }
         notifyDataSetChanged()
     }
@@ -56,14 +57,6 @@ class AnswerRVAdapter(
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
-//                getItem(bindingAdapterPosition)?.let { item -> onClick(item) }
-
-                /*if (oldSelectedItem > 0) {
-//                    binding.root.setBackgroundColor(Color.WHITE)
-                    notifyItemChanged(oldSelectedItem)
-                }
-                binding.root.setBackgroundColor(Color.GRAY)
-                oldSelectedItem = adapterPosition*/
                 onClick(adapterPosition)
                 selectedItem = adapterPosition
                 notifyDataSetChanged()
@@ -85,6 +78,10 @@ class AnswerRVAdapter(
         fun selectItem() {
             binding.root.background =
                 ContextCompat.getDrawable(binding.root.context, R.drawable.item_selected_bg)
+        }
+
+        fun revealWrongAnswer() {
+            binding.wrongAnswerImaheView.visibility = View.VISIBLE
         }
     }
 }
