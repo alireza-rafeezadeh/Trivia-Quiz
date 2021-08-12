@@ -22,9 +22,11 @@
 
     <View
         android:id="@+id/view"
-        android:layout_width="328dp"
+        android:layout_width="0dp"
         android:layout_height="128dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/curved_white_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
@@ -32,6 +34,8 @@
         app:layout_constraintTop_toBottomOf="@+id/skip_question" />
 
     <TextView
+        android:textSize="23sp"
+        android:fontFamily="@font/calibri"
         android:id="@+id/question_text_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -65,6 +69,7 @@
         tools:listitem="@layout/item_answer" />
 
     <com.google.android.material.button.MaterialButton
+        android:fontFamily="@font/calibri"
         app:cornerRadius="@dimen/button_corner_radius"
         android:id="@+id/skip_question"
         android:layout_width="0dp"
@@ -83,6 +88,7 @@
 
 
     <com.google.android.material.button.MaterialButton
+        android:fontFamily="@font/calibri"
         app:cornerRadius="@dimen/button_corner_radius"
         android:textSize="12sp"
         android:id="@+id/remove_two_answers"
@@ -100,6 +106,7 @@
         app:layout_constraintTop_toTopOf="@+id/skip_question" />
 
     <com.google.android.material.button.MaterialButton
+        android:fontFamily="@font/calibri"
         android:id="@+id/next_button"
         android:layout_width="0dp"
         android:layout_height="60dp"
@@ -118,6 +125,7 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <com.google.android.material.button.MaterialButton
+        android:fontFamily="@font/calibri"
         app:cornerRadius="@dimen/button_corner_radius"
         android:textSize="12sp"
         android:id="@+id/add_ten_seconds_button"

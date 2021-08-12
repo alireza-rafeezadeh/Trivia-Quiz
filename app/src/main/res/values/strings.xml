@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">QuizApp</string>
     <string name="unable_to_go_back">You can\'t go back at this stage!</string>
+    <string name="instructions_text">After starting the quiz please don\'t put the app in the background otherwise you have to start over \n\nYou have 10 seconds to answer each quesiton. \n\nYou have three options to help you:\n\nAdd 15 seconds extra time\n\nRemove 2 incorrect answers\nReplace the question with another one. \n\nEach option can be used only once. \n\nGood luck!</string>
 </resources>
