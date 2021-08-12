@@ -7,6 +7,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth
 import com.trivia.quiz.QuestionDao
+import com.trivia.quiz.data.datasource.local.quiz.QuizLocalDataSource
 import com.trivia.quiz.data.room.AppDatabase
 import com.trivia.quiz.domain.Constants
 import com.trivia.quiz.domain.Success

@@ -42,8 +42,6 @@ class QuizFragmentTest {
 
     @Test
     fun displayViewsInUI() {
-//        Espresso.onView(withId(R.id.next_button))
-//            .perform(ViewActions.click())
         onView(withId(R.id.next_button)).check(matches(ViewMatchers.isDisplayed()))
         onView(withId(R.id.skip_question)).check(matches(ViewMatchers.isDisplayed()))
         onView(withId(R.id.remove_two_answers)).check(matches(ViewMatchers.isDisplayed()))

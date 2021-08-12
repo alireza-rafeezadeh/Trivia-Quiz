@@ -1,4 +1,4 @@
-package com.trivia.quiz.data.datasource.offline.quiz
+package com.trivia.quiz.data.datasource.local.quiz
 
 import com.trivia.quiz.Question
 import com.trivia.quiz.domain.ResultWrapper

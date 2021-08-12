@@ -28,29 +28,29 @@ class QuestionPageFragment(
     override val bindingInflater:
                 (LayoutInflater, ViewGroup?, Boolean) -> FragmentQuestionPageBinding
         get() = FragmentQuestionPageBinding::inflate
-//    lateinit var answers: MutableList<Answer>
 
-    lateinit var timer: CountDownTimer
-    lateinit var userAnswer: AnswerStat
-    lateinit var adapter: AnswerRVAdapter
-    var timeToAnswer: Long = 10000
-    var additionalTime: Long = 0
-    var progressT: Long = 0
-
+    private lateinit var timer: CountDownTimer
+    private lateinit var userAnswer: AnswerStat
+    private lateinit var adapter: AnswerRVAdapter
+    private var timeToAnswer: Long = 10000
+    private var progressT: Long = 0
     private val sharedViewModel: QuizSharedViewModel by activityViewModels()
     private val viewModel: QuestionViewModel by viewModels()
 
-//    @Inject
-//    lateinit var quizResult: QuizResult
-
     override fun setup() {
-        disableButtons()
+        toggleButtonColors()
         setOnClickListeners()
         initTitle()
         initRecyclerView()
     }
 
-    private fun disableButtons() {
+    override fun onResume() {
+        super.onResume()
+        initCountDownTimer()
+        toggleButtonColors()
+    }
+
+    private fun toggleButtonColors() {
         if (sharedViewModel.extraPowers.hasAddTenSeconds) {
             disableButton(binding.addTenSecondsButton)
         }
@@ -62,66 +62,7 @@ class QuestionPageFragment(
         }
     }
 
-    private fun disableButton(button: MaterialButton) {
-        button.backgroundTintList =
-            ContextCompat.getColorStateList(requireContext(), R.color.nobel)
-    }
-
-    private fun initTitle() {
-        viewModel.getShuffledAnswers(question)
-            .correctAnswerIndex().also {
-                userAnswer = Blank(it)
-            }
-        binding.questionTextView.text = question.question_title
-    }
-
-    override fun onResume() {
-        super.onResume()
-        initCountDownTimer()
-        disableButtons()
-    }
-
-    private fun initCountDownTimer() {
-        timer = object : CountDownTimer(timeToAnswer, 1000) {
-            override fun onTick(progress: Long) {
-                progressT = progress
-                val v = (progress / timeToAnswer.toFloat()) * 100f
-                binding.progressBar.progress = v.toInt()
-            }
-
-            override fun onFinish() {
-                sharedViewModel.userAnswers[questionNumber] = userAnswer
-                onCompleteTimer()
-            }
-
-        }
-
-        timer.start()
-    }
-
-    private fun initRecyclerView() {
-        adapter = AnswerRVAdapter(viewModel.answers) { userSelectedIndex ->
-            viewModel.answers.correctAnswerIndex().also { correctIndex ->
-                if (userSelectedIndex == correctIndex) {
-                    userAnswer = Correct(correctIndex)
-                } else {
-                    userAnswer = InCorrect(userSelectedIndex, correctIndex)
-                }
-            }
-
-        }
-        binding.answersRecyclerView.adapter = adapter
-    }
-
     private fun setOnClickListeners() {
-        /*binding.answersRadioGroup.setOnCheckedChangeListener { radioGroup, index ->
-//            if (answers[index].isCorrect) {
-//                // QuizResult.getInstance().
-//            }
-            quizResult.results.add(true)
-            Log.i("<<radio_tg>>", "setOnClickListeners: $quizResult")
-        }*/
-
         binding.nextButton.setOnClickListener {
             timer.cancel()
             sharedViewModel.userAnswers[questionNumber] = userAnswer
@@ -159,6 +100,52 @@ class QuestionPageFragment(
             }
         }
     }
+
+    private fun initTitle() {
+        viewModel.getShuffledAnswers(question)
+            .correctAnswerIndex().also {
+                userAnswer = Blank(it)
+            }
+        binding.questionTextView.text = question.question_title
+    }
+
+    private fun disableButton(button: MaterialButton) {
+        button.backgroundTintList =
+            ContextCompat.getColorStateList(requireContext(), R.color.nobel)
+    }
+
+    private fun initCountDownTimer() {
+        timer = object : CountDownTimer(timeToAnswer, 1000) {
+            override fun onTick(progress: Long) {
+                progressT = progress
+                val v = (progress / timeToAnswer.toFloat()) * 100f
+                binding.progressBar.progress = v.toInt()
+            }
+
+            override fun onFinish() {
+                sharedViewModel.userAnswers[questionNumber] = userAnswer
+                onCompleteTimer()
+            }
+
+        }
+
+        timer.start()
+    }
+
+    private fun initRecyclerView() {
+        adapter = AnswerRVAdapter(viewModel.answers) { userSelectedIndex ->
+            viewModel.answers.correctAnswerIndex().also { correctIndex ->
+                if (userSelectedIndex == correctIndex) {
+                    userAnswer = Correct(correctIndex)
+                } else {
+                    userAnswer = InCorrect(userSelectedIndex, correctIndex)
+                }
+            }
+
+        }
+        binding.answersRecyclerView.adapter = adapter
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()

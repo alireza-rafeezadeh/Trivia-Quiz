@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.trivia.quiz.databinding.ItemSummaryBinding
 import com.trivia.quiz.domain.quiz.*
-
+import com.trivia.quiz.util.exhaustive
 
 class SummaryRVAdapter(private val userAnswers: MutableList<AnswerStat>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -32,7 +32,6 @@ class SummaryRVAdapter(private val userAnswers: MutableList<AnswerStat>) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(answerStat: AnswerStat) {
             with(binding) {
-//                questionNumberTextView.text = quizResult2.
                 questionNumberTextView.text = adapterPosition.toString()
                 when (answerStat) {
                     is Blank -> {

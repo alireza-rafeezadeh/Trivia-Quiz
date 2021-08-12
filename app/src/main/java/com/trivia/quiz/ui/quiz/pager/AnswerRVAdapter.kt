@@ -17,7 +17,6 @@ class AnswerRVAdapter(
     private val onClick: (index: Int) -> Unit
 ) : RecyclerView.Adapter<AnswerRVAdapter.AnswerViewHolder>() {
 
-    var oldSelectedItem = -1
     var selectedItem = -1
     lateinit var wrongAnswers: Set<Int>
 

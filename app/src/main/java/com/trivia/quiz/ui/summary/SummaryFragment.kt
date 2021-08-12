@@ -22,29 +22,13 @@ class SummaryFragment : ViewBindingFragment<FragmentSummaryBinding>() {
     private val sharedViewModel: QuizSharedViewModel by activityViewModels()
 
     override fun setup() {
-
         handleBackButton {
-            Toast.makeText(requireContext(), getString(R.string.unable_to_go_back), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.unable_to_go_back),
+                Toast.LENGTH_SHORT
+            ).show()
         }
-
-        var corrects = 0
-        var inCorrects = 0
-        var skippeds = 0
-        var blanks = 0
-
-        lifecycleScope.launchWhenResumed {
-            sharedViewModel.userAnswers.forEach {
-                when (it) {
-                    is Correct -> {
-                        corrects++
-                    }
-                    is Blank -> blanks++
-                    is InCorrect -> inCorrects++
-                    UnViewed -> { }
-                }.exhaustive
-            }
-        }
-
         setClickListeners()
         initRecyclerView()
     }
@@ -57,7 +41,8 @@ class SummaryFragment : ViewBindingFragment<FragmentSummaryBinding>() {
     }
 
     private fun initRecyclerView() {
-        val adapter = SummaryRVAdapter(sharedViewModel.userAnswers)
-        binding.summaryRVAdapter.adapter = adapter
+        SummaryRVAdapter(sharedViewModel.userAnswers).also {
+            binding.summaryRVAdapter.adapter = it
+        }
     }
 }

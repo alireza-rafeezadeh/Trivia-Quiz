@@ -17,7 +17,7 @@ import com.trivia.quiz.domain.Success
 import com.trivia.quiz.ui.QuizSharedViewModel
 import com.trivia.quiz.ui.quiz.pager.QuestionPagerAdapter
 import com.trivia.quiz.ui.quiz.pager.ViewBindingFragment
-import com.trivia.quiz.ui.summary.exhaustive
+import com.trivia.quiz.util.exhaustive
 import com.trivia.quiz.util.handleBackButton
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,9 +30,6 @@ class QuizFragment : ViewBindingFragment<FragmentQuizBinding>() {
     private val sharedViewModel: QuizSharedViewModel by activityViewModels()
 
     override fun setup() {
-
-        // The pager adapter, which provides the pages to the view pager widget.
-
         handleBackButton {
             Toast.makeText(
                 requireContext(),
@@ -40,7 +37,6 @@ class QuizFragment : ViewBindingFragment<FragmentQuizBinding>() {
                 Toast.LENGTH_SHORT
             ).show()
         }
-
         initObservers()
         viewModel.getQuestions()
     }
@@ -52,7 +48,7 @@ class QuizFragment : ViewBindingFragment<FragmentQuizBinding>() {
                     Toast.makeText(requireContext(), it.exception, Toast.LENGTH_SHORT).show()
                 }
                 InProgress -> {
-
+                    //TODO:
                 }
                 is Success -> {
                     sharedViewModel.substituteQuestion = it.data[Constants.QUESTIONS_SIZE - 1]
@@ -70,7 +66,9 @@ class QuizFragment : ViewBindingFragment<FragmentQuizBinding>() {
                 binding.pager.currentItem += 1
             }
         }
-        binding.pager.isUserInputEnabled = false
-        binding.pager.adapter = pagerAdapter
+        binding.pager.apply {
+            isUserInputEnabled = false
+            adapter = pagerAdapter
+        }
     }
 }

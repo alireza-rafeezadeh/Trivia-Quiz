@@ -1,6 +1,5 @@
 package com.trivia.quiz.ui.quiz
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.trivia.quiz.Question
 import com.trivia.quiz.data.repository.quiz.QuizRepository
 import com.trivia.quiz.domain.ResultWrapper
-//import com.trivia.quiz.ui.data.repository.quiz.QuizRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,12 +17,14 @@ class QuizViewModel @Inject constructor(
     private val quizRepository: QuizRepository
 ) : ViewModel() {
 
-    var questionsLiveData : MutableLiveData<ResultWrapper<List<Question>>> = MutableLiveData()
+    private var _questionsLiveData: MutableLiveData<ResultWrapper<List<Question>>> =
+        MutableLiveData()
+    val questionsLiveData: LiveData<ResultWrapper<List<Question>>> = _questionsLiveData
 
     fun getQuestions() {
-        viewModelScope.launch (Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             quizRepository.getQuestions().also {
-                questionsLiveData.postValue(it)
+                _questionsLiveData.postValue(it)
             }
         }
     }

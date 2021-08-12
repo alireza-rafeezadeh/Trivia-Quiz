@@ -34,10 +34,6 @@ class SummaryFragmentTest {
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 
-    @Before
-    fun setUp() {
-    }
-
     @Test
     fun navigatesToStartFragment() {
         TestNavHostController(ApplicationProvider.getApplicationContext()).also {
