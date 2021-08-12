@@ -64,7 +64,6 @@ class QuizFragment : ViewBindingFragment<FragmentQuizBinding>() {
 
     private fun initViewPager(list: List<Question>) {
         val pagerAdapter = QuestionPagerAdapter(requireActivity(), list) {
-            // TODO: assume there is no skipped question yet and also make it more kotlin style
             if (binding.pager.currentItem >= Constants.QUESTIONS_SIZE - 2) {
                 findNavController().navigate(R.id.action_quizFragment_to_summaryFragment)
             } else {

@@ -22,7 +22,7 @@ import androidx.test.runner.AndroidJUnitRunner
 import dagger.hilt.android.testing.HiltTestApplication
 
 /**
- * TODO: If you relocate this you need to also update app's build gradle file testInstrumentationRunner
+ * If you relocate this you need to also update app's build gradle file testInstrumentationRunner
  */
 
 @Suppress("unused")

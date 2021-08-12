@@ -7,9 +7,11 @@ import com.trivia.quiz.domain.quiz.AnswerStat
 import com.trivia.quiz.domain.quiz.ExtraPowers
 import com.trivia.quiz.domain.quiz.AnswerStatus
 import com.trivia.quiz.domain.quiz.UnViewed
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-//TODO ...
-class QuizSharedViewModel : ViewModel() {
+@HiltViewModel
+class QuizSharedViewModel @Inject constructor() : ViewModel() {
 
     var extraPowers = ExtraPowers()
     lateinit var substituteQuestion: Question
