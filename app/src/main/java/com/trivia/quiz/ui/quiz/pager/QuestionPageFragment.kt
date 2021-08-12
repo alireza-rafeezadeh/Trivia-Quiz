@@ -11,7 +11,6 @@ import com.google.android.material.button.MaterialButton
 import com.trivia.quiz.Question
 import com.trivia.quiz.R
 import com.trivia.quiz.databinding.FragmentQuestionPageBinding
-import com.trivia.quiz.domain.quiz.Answer
 import com.trivia.quiz.domain.quiz.AnswerStat
 import com.trivia.quiz.domain.quiz.QuizResult
 import com.trivia.quiz.domain.quiz.QuizResult2
@@ -54,13 +53,13 @@ class QuestionPageFragment(
     }
 
     private fun disableButtons() {
-        if (sharedViewModel.hasAddTenSeconds) {
+        if (sharedViewModel.extraPowers.hasAddTenSeconds) {
             disableButton(binding.addTenSecondsButton)
         }
-        if (sharedViewModel.hasSkippedOneQuestion) {
+        if (sharedViewModel.extraPowers.hasSkippedOneQuestion) {
             disableButton(binding.skipQuestion)
         }
-        if (sharedViewModel.hasRemovedTwoAnsers) {
+        if (sharedViewModel.extraPowers.hasRemovedTwoAnsers) {
             disableButton(binding.removeTwoAnswers)
         }
     }
@@ -136,11 +135,11 @@ class QuestionPageFragment(
             onCompleteTimer()
         }
         binding.skipQuestion.setOnClickListener {
-            if (!sharedViewModel.hasSkippedOneQuestion) {
+            if (!sharedViewModel.extraPowers.hasSkippedOneQuestion) {
                 /*sharedViewModel.userAnswers[questionNumber] = QuizResult2.Skipped
                 onCompleteTimer()*/
                 disableButton(binding.skipQuestion)
-                sharedViewModel.hasSkippedOneQuestion = true
+                sharedViewModel.extraPowers.hasSkippedOneQuestion = true
                 question = sharedViewModel.substituteQuestion
                 timer.cancel()
                 initCountDownTimer()
@@ -150,20 +149,20 @@ class QuestionPageFragment(
         }
 
         binding.removeTwoAnswers.setOnClickListener {
-            if (!sharedViewModel.hasRemovedTwoAnsers) {
+            if (!sharedViewModel.extraPowers.hasRemovedTwoAnsers) {
                 disableButton(binding.removeTwoAnswers)
                 adapter.removeTwoAnswers()
-                sharedViewModel.hasRemovedTwoAnsers = true
+                sharedViewModel.extraPowers.hasRemovedTwoAnsers = true
             }
         }
 
         binding.addTenSecondsButton.setOnClickListener {
-            if (!sharedViewModel.hasAddTenSeconds) {
+            if (!sharedViewModel.extraPowers.hasAddTenSeconds) {
                 disableButton(binding.addTenSecondsButton)
                 timer.cancel()
                 timeToAnswer = progressT + 10000
                 initCountDownTimer()
-                sharedViewModel.hasAddTenSeconds = true
+                sharedViewModel.extraPowers.hasAddTenSeconds = true
             }
         }
     }
