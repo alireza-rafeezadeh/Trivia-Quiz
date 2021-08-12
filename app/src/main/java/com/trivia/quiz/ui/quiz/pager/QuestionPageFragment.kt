@@ -11,9 +11,7 @@ import com.google.android.material.button.MaterialButton
 import com.trivia.quiz.Question
 import com.trivia.quiz.R
 import com.trivia.quiz.databinding.FragmentQuestionPageBinding
-import com.trivia.quiz.domain.quiz.AnswerStat
-import com.trivia.quiz.domain.quiz.QuizResult
-import com.trivia.quiz.domain.quiz.QuizResult2
+import com.trivia.quiz.domain.quiz.*
 import com.trivia.quiz.ui.QuizSharedViewModel
 import com.trivia.quiz.util.correctAnswerIndex
 import dagger.hilt.android.AndroidEntryPoint
@@ -72,7 +70,7 @@ class QuestionPageFragment(
     private fun initTitle() {
         viewModel.getShuffledAnswers(question)
             .correctAnswerIndex().also {
-                userAnswer2 = QuizResult2.Blank(it)
+                userAnswer2 = Blank(it)
             }
         binding.questionTextView.text = question.question_title
     }
@@ -107,9 +105,9 @@ class QuestionPageFragment(
             //TODO : make this extensiom funciton
             viewModel.answers.correctAnswerIndex().also { correctIndex ->
                 if (userSelectedIndex == correctIndex) {
-                    userAnswer2 = QuizResult2.Correct(correctIndex)
+                    userAnswer2 = Correct(correctIndex)
                 } else {
-                    userAnswer2 = QuizResult2.InCorrect(userSelectedIndex, correctIndex)
+                    userAnswer2 = InCorrect(userSelectedIndex, correctIndex)
                 }
             }
 

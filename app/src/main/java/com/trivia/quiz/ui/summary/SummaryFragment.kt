@@ -8,7 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.trivia.quiz.R
 import com.trivia.quiz.databinding.FragmentSummaryBinding
-import com.trivia.quiz.domain.quiz.QuizResult2
+import com.trivia.quiz.domain.quiz.*
 import com.trivia.quiz.ui.QuizSharedViewModel
 import com.trivia.quiz.ui.quiz.pager.ViewBindingFragment
 import com.trivia.quiz.util.handleBackButton
@@ -35,12 +35,12 @@ class SummaryFragment : ViewBindingFragment<FragmentSummaryBinding>() {
         lifecycleScope.launchWhenResumed {
             sharedViewModel.userAnswers.forEach {
                 when (it) {
-                    is QuizResult2.Correct -> {
+                    is Correct -> {
                         corrects++
                     }
-                    is QuizResult2.Blank -> blanks++
-                    is QuizResult2.InCorrect -> inCorrects++
-                    QuizResult2.UnViewed -> { }
+                    is Blank -> blanks++
+                    is InCorrect -> inCorrects++
+                    UnViewed -> { }
                 }.exhaustive
             }
         }

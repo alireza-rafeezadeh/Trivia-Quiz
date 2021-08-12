@@ -4,8 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.trivia.quiz.databinding.ItemSummaryBinding
-import com.trivia.quiz.domain.quiz.AnswerStat
-import com.trivia.quiz.domain.quiz.QuizResult2
+import com.trivia.quiz.domain.quiz.*
 
 
 class SummaryRVAdapter(private val userAnswers: MutableList<AnswerStat>) :
@@ -36,22 +35,22 @@ class SummaryRVAdapter(private val userAnswers: MutableList<AnswerStat>) :
 //                questionNumberTextView.text = quizResult2.
                 questionNumberTextView.text = adapterPosition.toString()
                 when (answerStat) {
-                    is QuizResult2.Blank -> {
+                    is Blank -> {
                         userAnswerTextView.text = "-"
                         correctAnswerTextView.text = answerStat.getCorrectAnswerString()
                         answerStatusTextView.text = answerStat.title
                     }
-                    is QuizResult2.Correct -> {
+                    is Correct -> {
                         userAnswerTextView.text = answerStat.getCorrectAnswerString()
                         correctAnswerTextView.text = answerStat.getCorrectAnswerString()
                         answerStatusTextView.text = answerStat.title
                     }
-                    is QuizResult2.InCorrect -> {
+                    is InCorrect -> {
                         userAnswerTextView.text = answerStat.getUserAnswerString()
                         correctAnswerTextView.text = answerStat.getCorrectAnswerString()
                         answerStatusTextView.text = answerStat.title
                     }
-                    QuizResult2.UnViewed -> {
+                    UnViewed -> {
                     }
                 }.exhaustive
 
