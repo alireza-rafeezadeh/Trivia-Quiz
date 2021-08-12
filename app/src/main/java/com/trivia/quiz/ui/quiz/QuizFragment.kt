@@ -3,6 +3,7 @@ package com.trivia.quiz.ui.quiz
 import android.provider.SyncStateContract
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -13,6 +14,7 @@ import com.trivia.quiz.domain.Constants
 import com.trivia.quiz.ui.QuizSharedViewModel
 import com.trivia.quiz.ui.quiz.pager.QuestionPagerAdapter
 import com.trivia.quiz.ui.quiz.pager.ViewBindingFragment
+import com.trivia.quiz.util.handleBackButton
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,6 +29,9 @@ class QuizFragment : ViewBindingFragment<FragmentQuizBinding>() {
 
         // The pager adapter, which provides the pages to the view pager widget.
 
+        handleBackButton {
+            Toast.makeText(requireContext(), getString(R.string.unable_to_go_back), Toast.LENGTH_SHORT).show()
+        }
 
         initObservers()
         viewModel.getQuestions()

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">QuizApp</string>
+    <string name="unable_to_go_back">You can\'t go back at this stage!</string>
 </resources>
