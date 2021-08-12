@@ -11,9 +11,13 @@ import com.trivia.quiz.Question
 import com.trivia.quiz.R
 import com.trivia.quiz.databinding.FragmentQuizBinding
 import com.trivia.quiz.domain.Constants
+import com.trivia.quiz.domain.Error
+import com.trivia.quiz.domain.InProgress
+import com.trivia.quiz.domain.Success
 import com.trivia.quiz.ui.QuizSharedViewModel
 import com.trivia.quiz.ui.quiz.pager.QuestionPagerAdapter
 import com.trivia.quiz.ui.quiz.pager.ViewBindingFragment
+import com.trivia.quiz.ui.summary.exhaustive
 import com.trivia.quiz.util.handleBackButton
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,14 +27,18 @@ class QuizFragment : ViewBindingFragment<FragmentQuizBinding>() {
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentQuizBinding
         get() = FragmentQuizBinding::inflate
     private val viewModel: QuizViewModel by viewModels()
-    val sharedViewModel: QuizSharedViewModel by activityViewModels()
+    private val sharedViewModel: QuizSharedViewModel by activityViewModels()
 
     override fun setup() {
 
         // The pager adapter, which provides the pages to the view pager widget.
 
         handleBackButton {
-            Toast.makeText(requireContext(), getString(R.string.unable_to_go_back), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.unable_to_go_back),
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
         initObservers()
@@ -39,8 +47,18 @@ class QuizFragment : ViewBindingFragment<FragmentQuizBinding>() {
 
     private fun initObservers() {
         viewModel.questionsLiveData.observe(viewLifecycleOwner, {
-            sharedViewModel.substituteQuestion = it[Constants.QUESTIONS_SIZE - 1]
-            initViewPager(it)
+            when (it) {
+                is Error -> {
+                    Toast.makeText(requireContext(), it.exception, Toast.LENGTH_SHORT).show()
+                }
+                InProgress -> {
+
+                }
+                is Success -> {
+                    sharedViewModel.substituteQuestion = it.data[Constants.QUESTIONS_SIZE - 1]
+                    initViewPager(it.data)
+                }
+            }.exhaustive
         })
     }
 

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trivia.quiz.Question
 import com.trivia.quiz.data.repository.quiz.QuizRepository
+import com.trivia.quiz.domain.ResultWrapper
 //import com.trivia.quiz.ui.data.repository.quiz.QuizRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +19,7 @@ class QuizViewModel @Inject constructor(
     private val quizRepository: QuizRepository
 ) : ViewModel() {
 
-    var questionsLiveData : MutableLiveData<List<Question>> = MutableLiveData()
+    var questionsLiveData : MutableLiveData<ResultWrapper<List<Question>>> = MutableLiveData()
 
     fun getQuestions() {
         viewModelScope.launch (Dispatchers.IO) {
