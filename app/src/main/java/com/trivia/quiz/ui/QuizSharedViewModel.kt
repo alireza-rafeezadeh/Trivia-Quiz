@@ -14,9 +14,18 @@ class QuizSharedViewModel : ViewModel() {
     var hasRemovedTwoAnsers = false
     var hasAddTenSeconds = false
 
-    lateinit var substituteQuestion : Question
+    lateinit var substituteQuestion: Question
 
-    var userAnswers : MutableList<AnswerStat> = MutableList(Constants.QUESTIONS_SIZE) {
+    var userAnswers: MutableList<AnswerStat> = MutableList(Constants.QUESTIONS_SIZE) {
         QuizResult2.UnViewed
+    }
+
+    fun resetStatesForNewQuiz() {
+        hasSkippedOneQuestion = false
+        hasRemovedTwoAnsers = false
+        hasAddTenSeconds = false
+        userAnswers = MutableList(Constants.QUESTIONS_SIZE) {
+            QuizResult2.UnViewed
+        }
     }
 }

@@ -51,6 +51,7 @@ class SummaryFragment : ViewBindingFragment<FragmentSummaryBinding>() {
 
     private fun setClickListeners() {
         binding.startOverButton.setOnClickListener {
+            sharedViewModel.resetStatesForNewQuiz()
             findNavController().navigate(R.id.action_summaryFragment_to_startFragment)
         }
     }
