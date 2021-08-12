@@ -64,6 +64,8 @@ class QuestionPageFragment(
 
     private fun setOnClickListeners() {
         binding.nextButton.setOnClickListener {
+            if (!::timer.isInitialized)
+                return@setOnClickListener
             timer.cancel()
             sharedViewModel.userAnswers[questionNumber] = userAnswer
             onCompleteTimer()
