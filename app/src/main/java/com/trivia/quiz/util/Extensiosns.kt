@@ -2,6 +2,7 @@ package com.trivia.quiz.util
 
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import com.trivia.quiz.domain.quiz.Answer
 
 
 fun Fragment.handleBackButton(backButtonLambda: () -> Unit) {
@@ -13,3 +14,5 @@ fun Fragment.handleBackButton(backButtonLambda: () -> Unit) {
         }
     requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 }
+
+fun MutableList<Answer>.correctAnswerIndex() = indexOfFirst { it.isCorrect }

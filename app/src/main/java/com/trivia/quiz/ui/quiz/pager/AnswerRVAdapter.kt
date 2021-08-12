@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.trivia.quiz.R
 import com.trivia.quiz.databinding.ItemAnswerBinding
 import com.trivia.quiz.domain.quiz.Answer
+import com.trivia.quiz.util.correctAnswerIndex
 
 
 class AnswerRVAdapter(
@@ -15,6 +16,7 @@ class AnswerRVAdapter(
     private val onClick: (index: Int) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    //TODO: recycler view view holder
     var oldSelectedItem = -1
     var selectedItem = -1
 
@@ -43,9 +45,7 @@ class AnswerRVAdapter(
 
     fun removeTwoAnswers() {
 
-        answers.indexOfFirst {
-            it.isCorrect
-        }.also {
+        answers.correctAnswerIndex().also {
             answers.removeAt((it + 1) % 4)
             answers.removeAt((it + 2) % 4)
         }

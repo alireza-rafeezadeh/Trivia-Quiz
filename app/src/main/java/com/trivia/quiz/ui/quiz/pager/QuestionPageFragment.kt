@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.google.android.material.button.MaterialButton
 import com.trivia.quiz.Question
 import com.trivia.quiz.R
@@ -15,6 +16,7 @@ import com.trivia.quiz.domain.quiz.AnswerStat
 import com.trivia.quiz.domain.quiz.QuizResult
 import com.trivia.quiz.domain.quiz.QuizResult2
 import com.trivia.quiz.ui.QuizSharedViewModel
+import com.trivia.quiz.util.correctAnswerIndex
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -28,7 +30,7 @@ class QuestionPageFragment(
     override val bindingInflater:
                 (LayoutInflater, ViewGroup?, Boolean) -> FragmentQuestionPageBinding
         get() = FragmentQuestionPageBinding::inflate
-    lateinit var answers: MutableList<Answer>
+//    lateinit var answers: MutableList<Answer>
 
     lateinit var timer: CountDownTimer
     var userAnswer = false
@@ -39,17 +41,12 @@ class QuestionPageFragment(
     var progressT: Long = 0
 
     private val sharedViewModel: QuizSharedViewModel by activityViewModels()
-
+    private val viewModel: QuestionViewModel by viewModels()
 
     @Inject
     lateinit var quizResult: QuizResult
 
     override fun setup() {
-        /*binding.answer1RadioButton.text = answers[1].description
-        binding.answer2RadioButton.text = answers[2].description
-        binding.answer3RadioButton.text = answers[3].description
-        binding.answer4RadioButton.text = answers[3].description*/
-
         disableButtons()
         setOnClickListeners()
         initTitle()
@@ -74,20 +71,10 @@ class QuestionPageFragment(
     }
 
     private fun initTitle() {
-        answers =
-            mutableListOf(
-                Answer(question.correct_answer, true),
-                Answer(question.answer1),
-                Answer(question.answer2),
-                Answer(question.answer3)
-            )
-        answers.shuffle()
-
-        answers.indexOfFirst { ans ->
-            ans.isCorrect
-        }.also {
-            userAnswer2 = QuizResult2.Blank(it)
-        }
+        viewModel.getShuffledAnswers(question)
+            .correctAnswerIndex().also {
+                userAnswer2 = QuizResult2.Blank(it)
+            }
         binding.questionTextView.text = question.question_title
     }
 
@@ -117,11 +104,9 @@ class QuestionPageFragment(
     }
 
     private fun initRecyclerView() {
-        adapter = AnswerRVAdapter(answers) { userSelectedIndex ->
+        adapter = AnswerRVAdapter(viewModel.answers) { userSelectedIndex ->
             //TODO : make this extensiom funciton
-            answers.indexOfFirst { ans ->
-                ans.isCorrect
-            }.also { correctIndex ->
+            viewModel.answers.correctAnswerIndex().also { correctIndex ->
                 if (userSelectedIndex == correctIndex) {
                     userAnswer2 = QuizResult2.Correct(correctIndex)
                 } else {
